@@ -1,0 +1,19 @@
+a:link{
+    color: whitesmoke;
+}
+a:active{
+    color: whitesmoke;
+}
+a:hover{
+    color: whitesmoke;
+}
+a:visited{
+    color: whitesmoke;
+}
+
+html,
+body { height: 100%; padding: 0; margin: 0; }
+.all { height: 100%; position: relative; }
+.down { width: 100%; position: absolute; top:3px;left: 0 ; bottom: 0; }
+
+

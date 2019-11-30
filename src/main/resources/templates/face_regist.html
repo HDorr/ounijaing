@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="../static/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../static/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/default.css">
+    <link rel="stylesheet" media="screen" href="../static/css/style.css">
+</head>
+<body>
+
+<div class="container1">
+    <div id="particles-js"></div>
+    <div id="login1">
+        <div class="panel panel-primary" style="width: 70%;height: 600px;text-align: center;margin: 0 auto;background-color: rgb(34,37,56)">
+            <div class="panel-heading" style="margin-top: -2px">
+                <h3 class="panel-title">刷脸注册</h3>
+            </div>
+            <div class="panel-body" style="text-align: center">
+                <div style="position: absolute;padding-top: 400px;padding-left: 230px">
+                    <input type="button" onclick="query()" value="注册"
+                           class="btn btn-info"></div>
+                <div id="media">
+                    <video id="video" width="100%" height="300" autoplay></video>
+                    <canvas id="canvas" width="530" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../static/js/particles.js"></script>
+<script src="../static/js/app.js"></script>
+
+<script type="text/javascript">
+    //var 是定义变量
+    var video = document.getElementById("video"); //获取video标签
+    var context = canvas.getContext("2d");
+    var con  ={
+        audio:false,
+        video:true,
+        video:{
+            width:1980,
+            height:1024
+
+        }
+    };
+
+    //导航 获取用户媒体对象
+    navigator.mediaDevices.getUserMedia(con)
+        .then(function(stream){
+            try{
+                video.src = window.URL.createObjectURL(stream);
+            }catch(e){
+                video.srcObject=stream;
+            }
+
+            video.onloadmetadate = function(e){
+                video.play();
+
+            }
+        });
+
+
+
+
+    function query(){
+
+        //把流媒体数据画到convas画布上去
+        context.drawImage(video,0,0,530,300);
+        var base = getBase64();
+
+
+        $.ajax({
+            type:"post",
+            url:"/faceRegist",
+            data:{"base":base},
+            dataType: "json"
+      });
+    }
+    function getBase64() {
+        var imgSrc = document.getElementById("canvas").toDataURL(
+            "image/png");
+        return imgSrc.split("base64,")[1];
+
+    }
+</script>
+
+</body>
+</html>

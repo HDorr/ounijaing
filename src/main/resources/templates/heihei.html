@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="meet_detail" style="display: none">   <!-- 只在这个div内的table里更新数据 -->
+    <table id="meet_detail_table" class="display table  table-hover" >
+        <thead >
+        <tr id="meet_first_tr">
+            <th data-field="meet_id" >会议ID</th>
+            <th data-field="meet_name" >会议名称</th>
+            <th data-field="meet_create_time"  >创建时间</th>
+            <th data-field="meet_start_time" >开始时间</th>
+            <th data-field="meet_end_time" >结束时间</th>
+            <th data-field="meet_time" >会议持续</th>
+            <th data-field="meet_number" >人数</th>
+            <th data-field="meet_pstn" >PSTN比例</th>
+        </tr>
+        </thead>
+    </table>
+    <span id="meet_total" style="float: left"></span>
+    <nav style="float: right" aria-label="Page navigation">   <!-- 翻页按钮的代码  -->
+        <ul class="pagination" id="page">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>
+

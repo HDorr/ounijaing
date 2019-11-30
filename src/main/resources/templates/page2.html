@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>分页插件-xiaoluo</title>
+    <style>
+        #page {
+            margin: 20px auto;
+            color: #666;
+            display: block;
+            text-align: center;
+        }
+
+        #page li {
+            display: inline-block;
+            min-width: 30px;
+            height: 28px;
+            cursor: pointer;
+            color: #666;
+            font-size: 13px;
+            line-height: 28px;
+            background-color: #f9f9f9;
+            border: 1px solid #dce0e0;
+            text-align: center;
+            margin: 0 4px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .xl-nextPage,
+        .xl-prevPage {
+            width: 60px;
+            color: #0073A9;
+            height: 28px;
+        }
+
+        #page li.xl-disabled {
+            opacity: .5;
+            cursor: no-drop;
+        }
+
+        #page li.xl-disabled:hover{
+            background-color: #f9f9f9 !important;
+            border: 1px solid #dce0e0 !important;
+            color: #666 !important;
+        }
+
+        #page li.xl-active {
+            background-color: #0073A9;
+            border-color: #0073A9;
+            color: #FFF
+        }
+
+        #page li:hover{
+            background-color: #0073A9 !important;
+            border-color: #0073A9;
+            color: #FFF
+        }
+
+        #page li.xl-jumpText {
+            background-color: rgba(0,0,0,0);
+            border-color: rgba(0,0,0,0);
+            opacity: 1;
+        }
+
+        #page li.xl-jumpText:hover{
+            background-color: rgba(0,0,0,0) !important;
+            border-color: rgba(0,0,0,0) !important;
+        }
+
+        #page li.xl-jumpButton{
+            padding: 0 5px;
+        }
+
+        #xlJumpNum {
+            width: 35px;
+            margin: 0 3px;
+        }
+        input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+            -webkit-appearance: none !important;
+        }
+        input[type="number"]{
+            -moz-appearance:textfield;
+        }
+
+    </style>
+</head>
+
+<body>
+<table id = "table">
+    <tr>
+        <td>登录名</td>
+        <td>密码</td>>
+        <td>用户名</td>
+        <td>状态</td>
+        <td>创建时间</td>
+        <td>操作</td>>
+    </tr>
+</table>
+<div id="page"></div>
+
+</body>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="../static/js/xlPaging.js"></script>
+<script>
+    // xlPaging.js 使用方法
+    var lenth = 0;
+    var nowpage = 1;
+    var pagenum = 1;
+    $(function () {
+        $.ajax({
+            type: "GET",
+            url: "/page",
+            dataType: 'json',
+            success: function (data) {
+                var items = ""
+                var item = "";
+                $.each(data,function (i,result) {
+                    lenth = lenth+1;
+                    //item = "<tr><td>"+result['userloginname']+"</td><td>"+result['userpassword']+"</td><td>"+result['userusername']+"</td><td>"+result['userstatus']+"</td><td>"+result['userlcreatedate']+"</td><td>"+"<a href=''>操作</a>"+"</td></tr>";
+                    //$("#table").append(item);
+                });
+                for(var j = 0;j<4;j++){
+                    item = "<tr><td>"+data[j]['userloginname']+"</td><td>"+data[j]['userpassword']+"</td><td>"+data[j]['userusername']+"</td><td>"+data[j]['userstatus']+"</td><td>"+data[j]['userlcreatedate']+"</td><td>"+"<a href=''>操作</a>"+"</td></tr>";
+                    items = items+item;
+                }
+                $('#table').append(items);
+                var table_header = "<tr>\n" +
+                    "        <td>登录名</td>\n" +
+                    "        <td>密码</td>>\n" +
+                    "        <td>用户名</td>\n" +
+                    "        <td>状态</td>\n" +
+                    "        <td>创建时间</td>\n" +
+                    "        <td>操作</td>>\n" +
+                    "    </tr>"
+                pagenum = parseInt((lenth-1)/4) +1;
+                console.log(lenth);
+                console.log(pagenum);
+                $("#page").paging({
+                    nowPage: 1, // 当前页码
+                    pageNum: pagenum, // 总页码
+                    buttonNum: 5, //要展示的页码数量
+                    canJump: 1,// 是否能跳转。0=不显示（默认），1=显示
+                    showOne: 1,//只有一页时，是否显示。0=不显示,1=显示（默认）
+                    callback: function (num) { //回调函数
+                        console.log(num);
+                        $.ajax({
+                            type: "GET",
+                            url: "/page",
+                            dataType: 'json',
+                            success: function (data) {
+                                items=""
+                                $("#table").html(table_header)
+                                for (var i = ((num - 1) * 4); i < (num * 4); i++) {
+                                    item = "<tr><td>" + data[i]['userloginname'] + "</td><td>" + data[i]['userpassword'] + "</td><td>" + data[i]['userusername'] + "</td><td>" + data[i]['userstatus'] + "</td><td>" + data[i]['userlcreatedate'] + "</td><td>" + "<a href=''>操作</a>" + "</td></tr>";
+                                    items = items+item;
+                                }
+                                console.log(items);
+                                $("#table").append(items);
+                            }
+                        });
+                    }
+                });
+
+            }
+        })
+
+    })
+
+
+
+</script>
+
+</html>

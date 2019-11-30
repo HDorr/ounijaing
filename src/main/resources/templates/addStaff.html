@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<!doctype html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="jquery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="../static/js/emp.js"></script>
+</head>
+
+<body>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">添加员工</h3>
+    </div>
+    <div class="panel-body">
+        <ul class="breadcrumb" contenteditable="true">
+            <li>当前位置 <span class="divider">/</span></li>
+            <li>员工管理 <span class="divider">/</span></li>
+            <li class="active">添加员工</li>
+        </ul>
+
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-right: 14px">姓名： </label>
+            <input class="form-control" type="text" style="width: 15%" id="addempname">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 14px">身份证号码： </label>
+            <input class="form-control" type="text" style="width: 15%" id="addempcardid">
+        </div>
+
+        <br>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 10px">性别： </label>
+            <div style="width: 150px">
+                <select class="form-control" id="addempsex">
+                    <option value="">请选择性别</option>
+                    <option value="1">男</option>
+                    <option value="2">女</option>
+                </select>
+            </div>
+
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 10px">职位： </label>
+            <div style="width: 150px">
+                <select class="form-control" id="addempjob">
+                    <option value="">请选择职位</option>
+                </select>
+            </div>
+        </div>
+
+        <br>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-right: 14px">学历： </label>
+            <input class="form-control" type="text" style="width: 15%" id="addempeducation">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 14px">邮箱： </label>
+            <input class="form-control" type="text" style="width: 15%" id="addempemail">
+        </div>
+        <br>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-right: 14px">手机： </label>
+            <input class="form-control" type="text" style="width: 15%" id="addempphone">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 14px">电话： </label>
+            <input class="form-control" type="text" style="width: 15%" id="addemptel">
+        </div>
+        <br>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-right: 14px">政治面貌： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addempparty">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 14px">QQ号码： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addempqqnum">
+        </div>
+        <br>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-right: 14px">联系地址： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addempaddress">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 14px">邮政编码： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addemppostcode">
+        </div>
+        <br>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-right: 14px">出生日期： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addempbirthday">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 14px">民族： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addemprace">
+        </div>
+        <br>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-right: 14px">所学专业： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addempspeciality">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 14px">爱好： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addemphobby">
+        </div>
+        <br>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px;margin-right: 14px">备注： </label>
+            <input class="form-control" type="text" style="width: 20%" id="addempremark">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 10px">所属部门： </label>
+            <div style="width: 150px">
+                <select class="form-control" id="addempdept">
+                    <option value="">部门选择</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <div style="display: flex">
+            <button type="button" class="btn btn-info" style="margin-left: 10px" onclick="addempbtn()">添加</button>
+            <button type="button" class="btn btn-info" onclick="window.location.href='staffSelect.html'" style="margin-left: 30px">取消</button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    initaddemphtml();
+</script>>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<!doctype html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="../static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="../static/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script src="../static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="../static/js/transUser.js"></script>
+    <script src="../static/js/deleteUser.js"></script>
+    <script src="../static/js/user.js"></script>
+    <style>
+        #page {
+            margin: 20px auto;
+            color: #666;
+            display: block;
+            text-align: center;
+        }
+
+        #page li {
+            display: inline-block;
+            min-width: 30px;
+            height: 28px;
+            cursor: pointer;
+            color: #666;
+            font-size: 13px;
+            line-height: 28px;
+            background-color: #f9f9f9;
+            border: 1px solid #dce0e0;
+            text-align: center;
+            margin: 0 4px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .xl-nextPage,
+        .xl-prevPage {
+            width: 60px;
+            color: #0073A9;
+            height: 28px;
+        }
+
+        #page li.xl-disabled {
+            opacity: .5;
+            cursor: no-drop;
+        }
+
+        #page li.xl-disabled:hover{
+            background-color: #f9f9f9 !important;
+            border: 1px solid #dce0e0 !important;
+            color: #666 !important;
+        }
+
+        #page li.xl-active {
+            background-color: #0073A9;
+            border-color: #0073A9;
+            color: #FFF
+        }
+
+        #page li:hover{
+            background-color: #0073A9 !important;
+            border-color: #0073A9;
+            color: #FFF
+        }
+
+        #page li.xl-jumpText {
+            background-color: rgba(0,0,0,0);
+            border-color: rgba(0,0,0,0);
+            opacity: 1;
+        }
+
+        #page li.xl-jumpText:hover{
+            background-color: rgba(0,0,0,0) !important;
+            border-color: rgba(0,0,0,0) !important;
+        }
+
+        #page li.xl-jumpButton{
+            padding: 0 5px;
+        }
+
+        #xlJumpNum {
+            width: 35px;
+            margin: 0 3px;
+        }
+        input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+            -webkit-appearance: none !important;
+        }
+        input[type="number"]{
+            -moz-appearance:textfield;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">用户查询</h3>
+    </div>
+    <div class="panel-body">
+        <ul class="breadcrumb" contenteditable="true">
+            <li>当前位置 <span class="divider">/</span></li>
+            <li>用户管理 <span class="divider">/</span></li>
+            <li class="active">用户查询</li>
+        </ul>
+        <div style="display: flex">
+            <label style="font-size: 15px;margin-top: 5px">用户名： </label>
+            <input class="form-control" type="text" style="width: 15%" id="searchinput">
+            <label style="font-size: 15px;margin-top: 5px;margin-left: 10px">用户状态： </label>
+
+            <div style="width: 150px">
+                <select class="form-control" id = "status-select">
+                    <option value="">全部</option>
+                    <option>管理员</option>
+                    <option>普通用户</option>
+                </select>
+            </div>
+
+
+            <button type="button" class="btn btn-info" style="margin-left: 10px" id = "search-btn">搜索</button>
+            <button type="button" class="btn btn-info" style="margin-left: 10px">删除</button>
+
+        </div>
+        <br>
+
+        <table class="table table-bordered table-hover" id="user-table">
+            <thead>
+            <tr>
+                <th style="display: none">id</th>
+                <th>登录名</th>
+                <th>密码</th>
+                <th>用户名</th>
+                <th>状态</th>
+                <th>创建时间</th>
+                <th>操作</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id = "tbody">
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    <div id="page"></div>
+</div>
+
+
+</div>
+
+</body>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="../static/js/xlPaging.js"></script>
+<script>
+
+    // var lenth = 0;
+    // var nowpage = 1;
+    // var pagenum = 1;
+    // var alldata;
+    // $(function () {
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "/Adminstrater/allUser",
+    //         dataType: 'json',
+    //         success: function (data) {
+    //             alldata = data;
+    //             var items = ""
+    //             var item = "";
+    //             console.log(data);
+    //             $.each(alldata,function (i,result) {
+    //                 lenth = lenth+1;
+    //                 //item = "<tr><td>"+result['userloginname']+"</td><td>"+result['userpassword']+"</td><td>"+result['userusername']+"</td><td>"+result['userstatus']+"</td><td>"+result['userlcreatedate']+"</td><td>"+"<a href=''>操作</a>"+"</td></tr>";
+    //                 //$("#table").append(item);
+    //             });
+    //             for(var j = 0;j<4;j++){
+    //                 if(data[j]==null){
+    //                     break;
+    //                 }
+    //                 item = "<tr><td>"+alldata[j]['userloginname']+"</td><td>"+alldata[j]['userpassword']+"</td><td>"+alldata[j]['userusername']+"</td><td>"+alldata[j]['userstatus']+"</td><td>"+alldata[j]['userlcreatedate']+"</td><td>"+"<a href='/totransUser'>修改</a>"+"</td><td>"+"<a href=''>删除</a>"+"</td></tr>";
+    //                 items = items+item;
+    //             }
+    //             $('#tbody').append(items);
+    //             pagenum = parseInt((lenth-1)/4) +1;
+    //             console.log(lenth);
+    //             console.log(pagenum);
+    //             $("#page").paging({
+    //                 nowPage: 1, // 当前页码
+    //                 pageNum: pagenum, // 总页码
+    //                 buttonNum: 5, //要展示的页码数量
+    //                 canJump: 1,// 是否能跳转。0=不显示（默认），1=显示
+    //                 showOne: 1,//只有一页时，是否显示。0=不显示,1=显示（默认）
+    //                 callback: function (num) { //回调函数
+    //                     console.log(num);
+    //                     $("#tbody").html("");
+    //                     items=""
+    //                     for (var i = ((num - 1) * 4); i < (num * 4); i++) {
+    //                         if(alldata[i]==null){
+    //                                     break;
+    //                         }
+    //                         item = "<tr>><td>" + data[i]['userloginname'] + "</td><td>" + data[i]['userpassword'] + "</td><td>" + data[i]['userusername'] + "</td><td>" + data[i]['userstatus'] + "</td><td>" + data[i]['userlcreatedate'] + "</td><td>" + "<a href='/totransUser'>修改</a>" + "</td><td>"+"<a href=''>删除</a>"+"</td></tr>";
+    //                         items = items+item;
+    //                     }
+    //                     console.log(items);
+    //                     $("#tbody").append(items);
+    //                 }
+    //
+    //
+    //             });
+    //
+    //         }
+    //     })
+    //
+    // })
+    $("#search-btn").click(function () {
+        flag= 1;
+        lenth = 0;
+        console.log("*"+lenth);
+        searchnm = $("#searchinput").val();
+        sta = $("#status-select").val();
+        if(searchnm=="" && sta==""){
+            $("#tbody").html("");
+            $.ajax({
+                type: "GET",
+                url: "/Adminstrater/allUser",
+                dataType: 'json',
+                success: function (data) {
+                    alldata = data;
+
+                    var items = ""
+                    var item = "";
+                    console.log(data);
+                    $.each(alldata,function (i,result) {
+                        lenth = lenth+1;
+                        //item = "<tr><td>"+result['userloginname']+"</td><td>"+result['userpassword']+"</td><td>"+result['userusername']+"</td><td>"+result['userstatus']+"</td><td>"+result['userlcreatedate']+"</td><td>"+"<a href=''>操作</a>"+"</td></tr>";
+                        //$("#table").append(item);
+                    });
+                    for(var o = 0; o<lenth;o++){
+                        alldata[o]['usercreatedate'] = transDate(alldata[o]['usercreatedate']);
+                    }
+
+                    for(var j = 0;j<4;j++){
+                        if(data[j]==null){
+                            break;
+                        }
+                        item = "<tr><td style=\"display: none\" id = \"userid"+flag.toString()+"\""+">" +alldata[j]['userid']+
+                            "</td><td td='td2'>"+alldata[j]['userloginname']+
+                            "</td><td>"+alldata[j]['userpassword']+
+                            "</td><td>"+alldata[j]['userusername']+
+                            "</td><td>"+alldata[j]['userstatus']+
+                            "</td><td>"+alldata[j]['usercreatedate']+
+                            "</td><td>"+"<a href='/totransUser' onclick=xiugai"+flag.toString()+"()"+">"+"修改</a>"+
+                            "</td><td>"+"<a href='/touserSelect' onclick=shanchu"+flag.toString()+"()"+">"+"删除</a>";
+                        items = items+item;
+                        flag++;
+                    }
+                    $('#tbody').append(items);
+                    pagenum = parseInt((lenth-1)/4) +1;
+                    console.log(lenth);
+                    console.log(pagenum);
+                    $("#page").paging({
+                        nowPage: 1, // 当前页码
+                        pageNum: pagenum, // 总页码
+                        buttonNum: 5, //要展示的页码数量
+                        canJump: 1,// 是否能跳转。0=不显示（默认），1=显示
+                        showOne: 0,//只有一页时，是否显示。0=不显示,1=显示（默认）
+                        callback: function (num) { //回调函数
+                            console.log(num);
+                            flag=1;
+                            $("#tbody").html("");
+                            items=""
+                            for (var i = ((num - 1) * 4); i < (num * 4); i++) {
+                                if(alldata[i]==null){
+                                    break;
+                                }
+                                item = "<tr><td style=\"display: none\" id = \"userid"+flag.toString()+"\""+">" +alldata[i]['userid']+
+                                    "</td><td>"+alldata[i]['userloginname']+
+                                    "</td><td>"+alldata[i]['userpassword']+
+                                    "</td><td>"+alldata[i]['userusername']+
+                                    "</td><td>"+alldata[i]['userstatus']+
+                                    "</td><td>"+alldata[i]['usercreatedate']+
+                                    "</td><td>"+"<a href='/totransUser' onclick=xiugai"+flag.toString()+"()"+">"+"修改</a>"+
+                                    "</td><td>"+"<a href='/touserSelect' onclick=shanchu"+flag.toString()+"()"+">"+"删除</a>";
+                                items = items+item;
+                                flag++;
+                            }
+                            console.log(items);
+                            $("#tbody").append(items);
+                        }
+
+                    });
+
+                }
+            })
+        }
+        else{
+            var data2 = {searchname:searchnm,statusStr:sta};
+            console.log(data2)
+            $("#tbody").html("");
+            ///var status  = $("#")
+            $.ajax({
+                type: "POST",
+                url: "/Adminstrater/searchUser",
+                data: data2,
+                dataType: 'json',
+                success: function (data3) {
+                    alldata=data3;
+                    var items = ""
+                    var item = "";
+                    console.log(data3);
+                    $.each(alldata,function (i,result) {
+                        lenth = lenth+1;
+                        //item = "<tr><td>"+result['userloginname']+"</td><td>"+result['userpassword']+"</td><td>"+result['userusername']+"</td><td>"+result['userstatus']+"</td><td>"+result['userlcreatedate']+"</td><td>"+"<a href=''>操作</a>"+"</td></tr>";
+                        //$("#table").append(item);
+                    });
+                    for(var j = 0;j<4;j++){
+                        if(alldata[j]==null){
+                            break;
+                        }
+                        for(var o = 0; o<lenth;o++){
+                            alldata[o]['usercreatedate'] = transDate(alldata[o]['usercreatedate']);
+                        }
+                        item = "<tr><td style=\"display: none\" id = \"userid"+flag.toString()+"\""+">" +alldata[j]['userid']+
+                            "</td><td>"+alldata[j]['userloginname']+
+                            "</td><td>"+alldata[j]['userpassword']+
+                            "</td><td>"+alldata[j]['userusername']+
+                            "</td><td>"+alldata[j]['userstatus']+
+                            "</td><td>"+alldata[j]['usercreatedate']+
+                            "</td><td>"+"<a href='/totransUser' onclick=xiugai"+flag.toString()+"()"+">"+"修改</a>"+
+                            "</td><td>"+"<a href='/touserSelect' onclick=shanchu"+flag.toString()+"()"+">"+"删除</a>";
+                        items = items+item;
+                        flag++;
+                    }
+                    $('#tbody').append(items);
+                    pagenum = parseInt((lenth-1)/4) +1;
+                    console.log(lenth);
+                    console.log(pagenum);
+
+                    $("#page").paging({
+                        nowPage: 1, // 当前页码
+                        pageNum: pagenum, // 总页码
+                        buttonNum: 5, //要展示的页码数量
+                        canJump: 1,// 是否能跳转。0=不显示（默认），1=显示
+                        showOne: 0,//只有一页时，是否显示。0=不显示,1=显示（默认）
+                        callback: function (num) { //回调函数
+                            console.log(num);
+                            $.ajax({
+                                type: "POST",
+                                url: "/Adminstrater/searchUser",
+                                data: data2,
+                                dataType: 'json',
+                                success: function (alldata) {
+                                    console.log(alldata);
+                                    flag=1;
+                                    $("#tbody").html("");
+                                    items=""
+                                    for (var i = ((num - 1) * 4); i < (num * 4); i++) {
+                                        if(data3[i]==null){
+                                            break;
+                                        }
+                                        for(var o = 0; o<lenth;o++){
+                                            alldata[o]['usercreatedate'] = transDate(alldata[o]['usercreatedate']);
+                                        }
+                                        item = "<tr><td style=\"display: none\" id = \"userid"+flag.toString()+"\""+">" +alldata[i]['userid']+
+                                            "</td><td>"+alldata[i]['userloginname']+
+                                            "</td><td>"+alldata[i]['userpassword']+
+                                            "</td><td>"+alldata[i]['userusername']+
+                                            "</td><td>"+alldata[i]['userstatus']+
+                                            "</td><td>"+alldata[i]['usercreatedate']+
+                                            "</td><td>"+"<a href='/totransUser' onclick=xiugai"+flag.toString()+"()"+">"+"修改</a>"+
+                                            "</td><td>"+"<a href='/touserSelect' onclick=shanchu"+flag.toString()+"()"+">"+"删除</a>";
+                                        items = items+item;
+                                        flag++;
+                                    }
+                                    console.log(items);
+                                    $("#tbody").append(items);
+                                }
+                            });
+                        }
+                    });
+
+
+                }
+            })
+        }
+    })
+
+
+</script>
